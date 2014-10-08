@@ -18,8 +18,8 @@ Vagrant::configure("2") do |config|
 	# Configure Hub
 	name = "hub"
 	config.vm.define name do |node|
-		node.proxy.http     = "http://proxye1.finra.org:8080"
-		node.proxy.https    = "http://proxye1.finra.org:8080"
+		node.proxy.http     = ENV["http_proxy"]
+		node.proxy.https    = ENV["https_proxy"]
 		node.proxy.no_proxy = "localhost,127.0.0.1"
 		node.vm.box_url = "http://files.vagrantup.com/precise32.box"
 		node.vm.box = "Ubuntu Precise 32"
