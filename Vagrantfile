@@ -1,3 +1,8 @@
+scriptSetup = <<SCRIPT
+mkdir /vagrant/boxes
+sudo apt-get install -y curl
+SCRIPT
+
 scriptIE = <<SCRIPT
 /cygdrive/c/webdrivers/node.bat &> selenium.log &
 SCRIPT
@@ -15,6 +20,17 @@ SCRIPT
 
 Vagrant::configure("2") do |config|
 	
+	# Configure Setup box
+	name = "setup"
+	config.vm.define name do |node|
+		node.proxy.http     = ENV["http_proxy"]
+		node.proxy.https    = ENV["https_proxy"]
+		node.proxy.no_proxy = "localhost,127.0.0.1"
+		node.vm.box_url = "http://files.vagrantup.com/precise32.box"
+		node.vm.box = "Ubuntu Precise 32"
+   		node.vm.provision "shell", inline: scriptSetup
+	end
+
 	# Configure Hub
 	name = "hub"
 	config.vm.define name do |node|
